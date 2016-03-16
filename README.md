@@ -38,18 +38,3 @@ This recent comments widget provides advanced widget features for displaying com
 ### Where can I find additional additional documentation?
 
 The plugin's official page: http://darrinb.com/plugins/advanced-comments-widget
-
-
-== Screenshots ==
-
-1. Accessible from the Quick Edit form
-2. Shown with color picker extension.
-3. Shown with icons extension.
-4. Shown with featured image extension.
-
-
-== Changelog ==
-
-= 1.0 =
-* Initial release
-
