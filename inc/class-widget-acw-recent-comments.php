@@ -646,14 +646,16 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 							<?php echo $this->get_comment_author_avatar( $comment, $instance ); ?>
 						</span>
 					<?php endif; ?>
-
-					<?php
-					printf(
-						_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
-						'<span class="comment-author acw-comment-author">' . get_comment_author_link( $comment ) . '</span>',
-						'<span class="comment-link acw-comment-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
-					);
-					?>
+					
+					<span class="comment-header">
+						<?php
+						printf(
+							_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
+							'<span class="comment-author acw-comment-author">' . get_comment_author_link( $comment ) . '</span>',
+							'<span class="comment-link acw-comment-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
+						);
+						?>
+					</span>
 
 				</footer>
 
@@ -703,13 +705,15 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 						</span>
 					<?php endif; ?>
 
-					<?php
-					printf(
-						_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
-						'<span class="comment-author acw-comment-author">' . get_comment_author_link( $comment ) . '</span>',
-						'<span class="comment-link acw-comment-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
-					);
-					?>
+					<span class="comment-header acw-comment-header">
+						<?php
+						printf(
+							_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
+							'<span class="comment-author acw-comment-author">' . get_comment_author_link( $comment ) . '</span>',
+							'<span class="comment-link acw-comment-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
+						);
+						?>
+					</span>
 
 				</div>
 

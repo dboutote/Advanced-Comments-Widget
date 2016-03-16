@@ -1,5 +1,3 @@
-# Advanced Comments Widget
-
 === Advanced Comments Widget ===
 Contributors: dbmartin
 Tags: comments, recent-comments, widget, comment-widget
@@ -15,7 +13,7 @@ A highly customizable recent comments widget with avatars and excerpts.
 
 This recent comments widget provides advanced widget features for displaying comment author avatars _and_ an excerpt of their comment.
 
-### Features
+__Features__
 
 * Select which post types to show comments for.  (You can choose either all types, or a specific type.) 
 * Show comment author avatar.
@@ -28,15 +26,15 @@ This recent comments widget provides advanced widget features for displaying com
 * Select the comment format. Choose between `html5` or `xhtml`.
 
 
-# Installation
+== Installation ==
 
-### From the WordPress.org plugin repository:
+= From the WordPress.org plugin repository: =
 
 * Download and install using the built in WordPress plugin installer.
 * Activate in the "Plugins" area of your admin by clicking the "Activate" link.
 * No further setup or configuration is necessary.
 
-### From GitHub:
+= From GitHub: =
 
 * Download the [latest stable version](https://github.com/dboutote/Advanced-Comments-Widget/archive/master.zip).
 * Extract the zip folder to your plugins directory.
@@ -44,9 +42,9 @@ This recent comments widget provides advanced widget features for displaying com
 * No further setup or configuration is necessary.
 
 
-# FAQ
+== Frequently Asked Questions ==
 
-### Where can I find additional additional documentation?
+= Where can I find documentation? =
 
 The plugin's official page: http://darrinb.com/plugins/advanced-comments-widget
 
@@ -63,4 +61,3 @@ The plugin's official page: http://darrinb.com/plugins/advanced-comments-widget
 
 = 1.0 =
 * Initial release
-
