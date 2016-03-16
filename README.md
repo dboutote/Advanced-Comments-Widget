@@ -1,17 +1,6 @@
 # Advanced Comments Widget
 
-=== Advanced Comments Widget ===
-Contributors: dbmartin
-Tags: comments, recent-comments, widget, comment-widget
-Requires at least: 4.4
-Tested up to: 4.4.1
-Stable tag: 1.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
 A highly customizable recent comments widget with avatars and excerpts.
-
-== Description ==
 
 This recent comments widget provides advanced widget features for displaying comment author avatars _and_ an excerpt of their comment.
 
