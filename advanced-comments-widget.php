@@ -2,14 +2,14 @@
 /**
  * Advanced Comments Widget
  *
- * @package Advanced_Comments_Widget
+ * @package ACW_Recent_Comments
  *
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  * @version     1.0
  *
  * Plugin Name: Advanced Comments Widget
  * Plugin URI:  http://darrinb.com/plugins/advanced-comments-widget
- * Description: A highly customizable recent comments widget
+ * Description: A highly customizable recent comments widget.
  * Version:     1.0
  * Author:      Darrin Boutote
  * Author URI:  http://darrinb.com
@@ -28,9 +28,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-require( plugin_dir_path( __FILE__ ) . 'testing.php');
-
-
 /**
  * Instantiates the main Advanced Comment Widget instance
  *
@@ -38,11 +35,11 @@ require( plugin_dir_path( __FILE__ ) . 'testing.php');
  */
 function _acw_init() {
 	
-	include dirname( __FILE__ ) . '/inc/class-widget-advanced-comments.php';
-	include dirname( __FILE__ ) . '/inc/class-advanced-comments-widget.php';
+	include dirname( __FILE__ ) . '/inc/class-widget-acw-recent-comments.php';
+	include dirname( __FILE__ ) . '/inc/class-acw-recent-comments.php';
 	
-	$Advanced_Comments_Widget = new Advanced_Comments_Widget( __FILE__ );
-	$Advanced_Comments_Widget->init();
+	$ACW_Recent_Comments = new ACW_Recent_Comments( __FILE__ );
+	$ACW_Recent_Comments->init();
 
 }
 add_action( 'plugins_loaded', '_acw_init', 99 );

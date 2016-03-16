@@ -25,16 +25,20 @@ if( "undefined"==typeof jQuery )throw new Error( "Advanced Comments Widget's Jav
 		return;
 	};
 
-	$('#wpcontent').on( 'change', '.acw-thumb-size', function ( e ) {
+	// Customizer Screen
+	$('#customize-controls, #wpcontent').on( 'change', '.acw-thumb-size', function ( e ) {
 		change_avatar_div( e );
 		return;
 	});
 
-	$('#wpcontent').on( 'keyup', '.acw-thumb-size', function ( e ) {
+	// Customizer Screen
+	$('#customize-controls, #wpcontent').on( 'keyup', '.acw-thumb-size', function ( e ) {
 		setTimeout( function(){
 			change_avatar_div( e );
 		}, 300 );
 		return;
 	});
+
+
 
 }(jQuery));

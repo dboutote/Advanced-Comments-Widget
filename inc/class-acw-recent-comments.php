@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Advanced_Comments_Widget Class
+ * ACW_Recent_Comments Class
  *
  * Adds a Recent Comments widget with extended functionality
  *
- * @package Advanced_Comments_Widget
+ * @package ACW_Recent_Comments
  *
  * @since 1.0
  *
@@ -19,13 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-class Advanced_Comments_Widget
+class ACW_Recent_Comments
 {
 
 	/**
 	 * Full file path to plugin file
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @var string
 	 */
@@ -35,7 +35,7 @@ class Advanced_Comments_Widget
 	/**
 	 * URL to plugin
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @var string
 	 */
@@ -45,7 +45,7 @@ class Advanced_Comments_Widget
 	/**
 	 * Filesystem directory path to plugin
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @var string
 	 */
@@ -57,7 +57,7 @@ class Advanced_Comments_Widget
 	 *
 	 * e.g. "advanced-term-fields/advanced-term-fields.php"
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @var string
 	 */
@@ -86,7 +86,7 @@ class Advanced_Comments_Widget
 	
 	public function register_widget()
 	{
-		register_widget( 'Widget_Advanced_Comments' );
+		register_widget( 'Widget_ACW_Recent_Comments' );
 	}
 	
 	
@@ -102,7 +102,9 @@ class Advanced_Comments_Widget
 	public function load_admin_scripts()
 	{
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_head', array( $this, 'enqueue_admin_styles' ) );
+		add_action( 'customize_controls_print_styles', array( $this, 'enqueue_admin_styles' ) );
 	}
 	
 	
@@ -111,18 +113,25 @@ class Advanced_Comments_Widget
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @return void
 	 */
-	public function enqueue_admin_scripts( $hook ){
-	
-		if( 'widgets.php' !== $hook ) {
-			return;
+	public function enqueue_admin_scripts( $hook )
+	{
+		global $pagenow;
+		
+		$enqueue = false;
+		
+		if( 'customize.php' == $pagenow || 'widgets.php' == $pagenow || 'widgets.php' == $hook ) {
+			$enqueue = true;
 		}
 		
+		if ( ! $enqueue ) {
+			return;
+		}
+				
 		wp_enqueue_script( 'acw-scripts', $this->url . 'js/admin.js', array( 'jquery' ), '', true );
-	
 	}
 
 
@@ -133,11 +142,12 @@ class Advanced_Comments_Widget
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @return void
 	 */
-	public function enqueue_admin_styles(){
+	public function enqueue_admin_styles()
+	{
 		?>
 		<style type="text/css">
 			.acw-avatar { display: block; border: 1px solid #ddd; margin: 5px 0; text-align: center; }

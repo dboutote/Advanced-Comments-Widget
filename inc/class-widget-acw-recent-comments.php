@@ -1,15 +1,14 @@
 <?php
 
 /**
- * Advanced_Comments_Widget Class
+ * Widget_ACW_Recent_Comments Class
  *
  * Adds a Recent Comments widget with extended functionality
  *
- * @package Advanced_Comments_Widget
- * @subpackage Widget_Advanced_Comments_Widget
+ * @package ACW_Recent_Comments
+ * @subpackage Widget_ACW_Recent_Comments
  *
  * @since 1.0
- *
  */
 
 // No direct access
@@ -27,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @see WP_Widget
  */
-class Widget_Advanced_Comments extends WP_Widget {
+class Widget_ACW_Recent_Comments extends WP_Widget {
 
 
 	/**
@@ -35,12 +34,12 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 */
 	public function __construct()
 	{
 		$widget_options = array(
-			'classname' => 'widget_advanced_recent_comments',
+			'classname' => 'widget_acw_recent_comments',
 			'description' => __( 'A recent comments widget with extended features.' )
 			);
 
@@ -53,17 +52,19 @@ class Widget_Advanced_Comments extends WP_Widget {
 			$control_options                 // $this->control_options
 		);
 
-		$this->alt_option_name = 'acw_recent_comments';
-
+		$this->alt_option_name = 'widget_acw_recent_comments';
 	}
 
 
 	/**
 	 * Outputs the content for the current Recent Comments widget instance.
 	 *
+	 * Applies 'widget_title' filter on $title to allow extension by plugins.
+	 * Applies 'acw_widget_comment_query_args' filter on $query_args to allow extension by plugins.
+	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param array $args     Display arguments including 'before_title', 'after_title',
 	 *                        'before_widget', and 'after_widget'.
@@ -71,15 +72,12 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 */
 	public function widget( $args, $instance )
 	{
-
 		if ( ! isset( $args['widget_id'] ) ){
 			$args['widget_id'] = $this->id;
 		}
 
 		$instance['widget_id'] = $this->id;
 		$instance['widget_number'] = $this->number;
-
-		$output = '';
 
 		$title = ( ! empty( $instance['title'] ) ) ? $instance['title'] : '';
 		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
@@ -96,6 +94,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 			$_post_types = $instance['post_type'];
 		}
 
+		// query
 		$query_args = array(
 			'number'      => $number,
 			'status'      => 'approve',
@@ -107,12 +106,13 @@ class Widget_Advanced_Comments extends WP_Widget {
 			$query_args['type__not_in'] = 'pings';
 		}
 
-		// let devs filter the default query
+		// let devs filter the query
 		$query_args = apply_filters( "acw_widget_comment_query_args", $query_args, $instance );
 
 		$comments = get_comments( $query_args );
 		
-		_debug( $comments );
+		// output
+		$output = '';
 
 		$output .= $args['before_widget'];
 
@@ -144,7 +144,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 		}
 
 		$output .= '</div><!-- /.acw-comments-wrap -->';
-
+		$output .= $this->colophon();
 		$output .= $args['after_widget'];
 
 		echo $output;
@@ -154,9 +154,11 @@ class Widget_Advanced_Comments extends WP_Widget {
 	/**
 	 * Handles updating settings for the current widget instance.
 	 *
+	 * Applies 'acw_widget_update_instance' filter on $instance to allow extension by plugins.
+	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param array $new_instance New settings for this instance as input by the user via
 	 *                            WP_Widget::form().
@@ -168,11 +170,11 @@ class Widget_Advanced_Comments extends WP_Widget {
 		$instance                   = $old_instance;
 		$instance['title']          = sanitize_text_field( $new_instance['title'] );
 		$instance['post_type']      = sanitize_text_field( $new_instance['post_type'] );
-		$instance['show_thumbs']    = isset( $new_instance['show_thumbs'] ) ? (bool) $new_instance['show_thumbs'] : 0 ;
+		$instance['show_thumbs']    = isset( $new_instance['show_thumbs'] ) ? 1 : 0 ;
 		$instance['thumb_size']     = absint( $new_instance['thumb_size'] );
-		$instance['show_excerpt']   = isset( $new_instance['show_excerpt'] ) ? (bool) $new_instance['show_excerpt'] : 0 ;
+		$instance['show_excerpt']   = isset( $new_instance['show_excerpt'] ) ? 1 : 0 ;
 		$instance['excerpt_length'] = absint( $new_instance['excerpt_length'] );
-		$instance['exclude_pings']  = isset( $new_instance['exclude_pings'] ) ? (bool) $new_instance['exclude_pings'] : 0 ;
+		$instance['exclude_pings']  = isset( $new_instance['exclude_pings'] ) ? 1 : 0 ;
 		$instance['number']         = absint( $new_instance['number'] );
 		$instance['list_style']     = ( '' !== $new_instance['list_style'] ) ? sanitize_key( $new_instance['list_style'] ) : 'ul ';
 		$instance['comment_format'] = ( '' !== $new_instance['comment_format'] ) ? sanitize_key( $new_instance['comment_format'] ) : 'xhtml ';
@@ -186,17 +188,20 @@ class Widget_Advanced_Comments extends WP_Widget {
 	/**
 	 * Outputs the settings form for the Recent Comments widget.
 	 *
+	 * Applies 'acw_form_fields' filter on form fields to allow extension by plugins.
+	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param array $instance Current settings.
 	 */
 	public function form( $instance )
 	{
 		$_comment_format = current_theme_supports( 'html5', 'comment-list' ) ? 'html5' : 'xhtml';
-		
-		$form_defaults = array(
+		$_list_style = ( 'html5' == $_comment_format ) ? 'div' : 'ul' ;
+
+		$form_fields = array(
 			'title'          => __('Recent Comments'),
 			'post_type'      => 'post',
 			'show_thumbs'    => 1,
@@ -204,24 +209,23 @@ class Widget_Advanced_Comments extends WP_Widget {
 			'number'         => 5,
 			'show_excerpt'   => 1,
 			'excerpt_length' => 50,
-			'exclude_pings'  => 0,
+			'exclude_pings'  => 1,
 			'comment_format' => $_comment_format,
-			'list_style'     => 'ul',
+			'list_style'     => $_list_style,
 		);
-		
-		$form_defaults = apply_filters( 'acw_form_defaults', $form_defaults );
-		$instance = wp_parse_args( (array) $instance, $form_defaults );	
 
+		$form_fields = apply_filters( 'acw_form_fields', $form_fields );
+		$instance = wp_parse_args( (array) $instance, $form_fields );
 		?>
-		
-		<?php if( isset( $form_defaults['title'] ) ) : ?>				
+
+		<?php if( isset( $form_fields['title'] ) ) : ?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 				<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 			</p>
 		<?php endif; ?>
-		
-		<?php if( isset( $form_defaults['post_type'] ) ) : ?>
+
+		<?php if( isset( $form_fields['post_type'] ) ) : ?>
 			<?php $post_types = $this->get_post_types(); ?>
 			<p>
 				<label for="<?php echo $this->get_field_id('post_type'); ?>">
@@ -232,19 +236,20 @@ class Widget_Advanced_Comments extends WP_Widget {
 						<option value="<?php echo esc_attr( $query_var ); ?>" <?php selected( $instance['post_type'] , $query_var ); ?>><?php echo esc_html( $label ); ?></option>
 					<?php } ?>
 				</select>
-			</p>		
+			</p>
 		<?php endif; ?>
 
-		<?php if( isset( $form_defaults['show_thumbs'] ) ) : ?>
+		<?php if( isset( $form_fields['show_thumbs'] ) ) : ?>
+			<h3>Avatars</h3>
 			<p>
 				<input class="checkbox" type="checkbox" id="<?php echo $this->get_field_id( 'show_thumbs' ); ?>" name="<?php echo $this->get_field_name( 'show_thumbs' ); ?>" <?php checked( $instance['show_thumbs'], 1 ); ?>/>
 				<label for="<?php echo $this->get_field_id( 'show_thumbs' ); ?>">
-					<?php _e( 'Display Avatars/Thumbnails' ); ?>
+					<?php _e( 'Display Avatars' ); ?>
 				</label>
 			</p>
 		<?php endif; ?>
 
-		<?php if( isset( $form_defaults['thumb_size'] ) ) : ?>
+		<?php if( isset( $form_fields['thumb_size'] ) ) : ?>
 			<?php $thumb_size = absint( $instance['thumb_size'] ); ?>
 			<p class="acw-thumb-size-wrap">
 				<label for="<?php echo $this->get_field_id( 'thumb_size' ); ?>">
@@ -257,7 +262,8 @@ class Widget_Advanced_Comments extends WP_Widget {
 			</p>
 		<?php endif; ?>
 
-		<?php if( isset( $form_defaults['show_excerpt'] ) ) : ?>
+		<?php if( isset( $form_fields['show_excerpt'] ) ) : ?>
+			<h3>Comment Content</h3>
 			<p>
 				<input id="<?php echo $this->get_field_id( 'show_excerpt' ); ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ); ?>" type="checkbox" <?php checked( $instance['show_excerpt'], 1 ); ?> />
 				<label for="<?php echo $this->get_field_id( 'show_excerpt' ); ?>">
@@ -265,8 +271,8 @@ class Widget_Advanced_Comments extends WP_Widget {
 				</label>
 			</p>
 		<?php endif; ?>
-		
-		<?php if( isset( $form_defaults['excerpt_length'] ) ) : ?>
+
+		<?php if( isset( $form_fields['excerpt_length'] ) ) : ?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'excerpt_length' ); ?>">
 					<?php _e( 'Excerpt Length' ); ?>
@@ -274,8 +280,8 @@ class Widget_Advanced_Comments extends WP_Widget {
 				<input class="widefat acw-excerpt-length" id="<?php echo $this->get_field_id( 'excerpt_length' ); ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ); ?>" type="number" step="1" min="0" value="<?php echo absint( $instance['excerpt_length'] ); ?>" />
 			</p>
 		<?php endif; ?>
-		
-		<?php if( isset( $form_defaults['exclude_pings'] ) ) : ?>
+
+		<?php if( isset( $form_fields['exclude_pings'] ) ) : ?>
 			<p>
 				<input id="<?php echo $this->get_field_id( 'exclude_pings' ); ?>" name="<?php echo $this->get_field_name( 'exclude_pings' ); ?>" type="checkbox" <?php checked( $instance['exclude_pings'], 1 ); ?> />
 				<label for="<?php echo $this->get_field_id( 'exclude_pings' ); ?>">
@@ -283,8 +289,8 @@ class Widget_Advanced_Comments extends WP_Widget {
 				</label>
 			</p>
 		<?php endif; ?>
-		
-		<?php if( isset( $form_defaults['number'] ) ) : ?>
+
+		<?php if( isset( $form_fields['number'] ) ) : ?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'number' ); ?>">
 					<?php _e( 'Number of comments to show:' ); ?>
@@ -293,7 +299,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 			</p>
 		<?php endif; ?>
 
-		<?php if( isset( $form_defaults['list_style'] ) ) : ?>
+		<?php if( isset( $form_fields['list_style'] ) ) : ?>
 			<p>
 				<label for="<?php echo $this->get_field_id('list_style'); ?>">
 					<?php _e( 'Comment List Format:' ); ?>
@@ -306,7 +312,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 			</p>
 		<?php endif; ?>
 
-		<?php if( isset( $form_defaults['comment_format'] ) ) : ?>
+		<?php if( isset( $form_fields['comment_format'] ) ) : ?>
 			<p>
 				<?php _e( 'Comment Format:' ); ?><br />
 				<label>
@@ -331,7 +337,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @return array $_ptypes Filtered array of post types.
 	 */
@@ -357,8 +363,10 @@ class Widget_Advanced_Comments extends WP_Widget {
 		// Clean the values (since it can be filtered by other plugins)
 		$_ptypes = array_map('esc_html', $_ptypes);
 
-		// Flip to clean the keys (used as <option> values in <select> field on form)
-		// Note: Keys *should* be post-type names e.g., "post", "page", "event", etc.
+		/**
+		 * Flip to clean the keys (used as <option> values in <select> field on form)
+		 * Note: Keys *should* be post-type names e.g., "post", "page", "event", etc.
+		 */
 		$_ptypes = array_flip( $_ptypes );
 		$_ptypes = array_map('sanitize_key', $_ptypes);
 
@@ -376,7 +384,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 * Generate avatar markup
 	 *
 	 * @access public
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param object $comment  Comment to display.
 	 * @param array $instance Widget instance.
@@ -404,7 +412,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 * Applies 'acw_comment_class' filter on comment classes to allow extension by plugins.
 	 *
 	 * @access public
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param object $comment  Comment to display.
 	 * @param array $instance Widget instance.
@@ -413,7 +421,6 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 */
 	public function get_acw_comment_class( $comment, $instance )
 	{
-
 		$type = ( empty( $comment->comment_type ) ) ? 'comment' : $comment->comment_type;
 
 		$classes = array();
@@ -421,6 +428,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 		$classes[] = 'acw-comment';
 		$classes[] = 'type-' . $type;
 		$classes[] = 'acw-type-' . $type;
+		$classes[] = 'recentcomments';
 
 		if ( $comment->comment_parent > 0 ) {
 			$classes[] = 'child-comment';
@@ -443,7 +451,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 * Applies 'acw_comment_id' filter on comment ID to allow extension by plugins.
 	 *
 	 * @access public
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param object $comment Comment to display.
 	 * @param array $instance Widget instance.
@@ -466,7 +474,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 * Note: 'comment_text' is Core WordPress filter
 	 *
 	 * @access public
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param object $comment  Comment to display.
 	 * @param array $instance Widget instance.
@@ -475,7 +483,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 */
 	public function get_comment_content( $comment, $instance )
 	{
-		$comment_content = apply_filters('acw_get_comment_content', $comment->comment_content, $comment, $instance );
+		$comment_content = apply_filters('acw_comment_content', $comment->comment_content, $comment, $instance );
 
 		return apply_filters( 'comment_text', $comment_content, $comment, $instance );
 	}
@@ -486,7 +494,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param array $comments The comments returned from get_comments()
 	 * @param array $instance Widget instance
@@ -510,7 +518,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param array $comments The comments returned from get_comments()
 	 * @param array $instance Widget instance
@@ -529,6 +537,21 @@ class Widget_Advanced_Comments extends WP_Widget {
 	}
 
 
+	/**
+	 * Opens the comment list for the current Recent Comments widget instance.
+	 *
+	 * Applies 'acw_start_list' filter on $output to allow extension by plugins.
+	 * Applies 'acw_comment_list_class' filter on list classes to allow extension by plugins.
+	 *
+	 * @access public
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $instance Settings for the current Recent Comments widget instance.
+	 * @param array $comments Comments to display.
+	 *
+	 * @return string $output Opening tag element for the comment list.
+	 */
 	public function start_list( $instance, $comments )
 	{
         switch ( $instance['list_style'] ) {
@@ -551,15 +574,26 @@ class Widget_Advanced_Comments extends WP_Widget {
 		$classes = array_map('sanitize_html_class', $classes);
 		$class_str = implode(' ', $classes);
 
-		$output = sprintf('<%1$s class="%2$s">',
-			$tag,
-			$class_str
-		);
+		$output = sprintf( '<%1$s class="%2$s">', $tag, $class_str );
 
 		return apply_filters( 'acw_start_list', $output, $instance, $comments );
 	}
 
 
+	/**
+	 * Closes the comment list for the current Recent Comments widget instance.
+	 *
+	 * Applies 'acw_end_list' filter on $output to allow extension by plugins.
+	 *
+	 * @access public
+	 *
+	 * @since 1.0
+	 *
+	 * @param array $instance Settings for the current Recent Comments widget instance.
+	 * @param array $comments Comments to display.
+	 *
+	 * @return string $output Closing tag element for the comment list.
+	 */
 	public function end_list( $instance, $comments )
 	{
         switch ( $instance['list_style'] ) {
@@ -580,7 +614,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 
 
 	/**
-	 * Output a comment in the HTML5 format.
+	 * Outputs a single comment in the HTML5 format.
 	 *
 	 * @uses Advanced_Comments_Widget::get_acw_comment_id()
 	 * @uses Advanced_Comments_Widget::get_acw_comment_class()
@@ -588,7 +622,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param object $comment WP_Comment Object
 	 * @param object $instance Widget instance
@@ -616,8 +650,8 @@ class Widget_Advanced_Comments extends WP_Widget {
 					<?php
 					printf(
 						_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
-						'<span class="comment-author-link">' . get_comment_author_link( $comment ) . '</span>',
-						'<span class="comment-post-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
+						'<span class="comment-author acw-comment-author">' . get_comment_author_link( $comment ) . '</span>',
+						'<span class="comment-link acw-comment-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
 					);
 					?>
 
@@ -637,7 +671,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 
 
 	/**
-	 * Output a comment in the XHTML format.
+	 * Outputs a single comment in the XHTML format.
 	 *
 	 * @uses Advanced_Comments_Widget::get_acw_comment_id()
 	 * @uses Advanced_Comments_Widget::get_acw_comment_class()
@@ -645,7 +679,7 @@ class Widget_Advanced_Comments extends WP_Widget {
 	 *
 	 * @access public
 	 *
-	 * @since 0.1.0
+	 * @since 1.0
 	 *
 	 * @param object $comment WP_Comment Object
 	 * @param object $instance Widget instance
@@ -672,8 +706,8 @@ class Widget_Advanced_Comments extends WP_Widget {
 					<?php
 					printf(
 						_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
-						'<span class="comment-author-link">' . get_comment_author_link( $comment ) . '</span>',
-						'<span class="comment-post-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
+						'<span class="comment-author acw-comment-author">' . get_comment_author_link( $comment ) . '</span>',
+						'<span class="comment-link acw-comment-link"><a class="comment-link acw-comment-link" href="' . esc_url( get_comment_link( $comment ) ) . '">' . get_the_title( $comment->comment_post_ID ) . '</a></span>'
 					);
 					?>
 
@@ -691,11 +725,19 @@ class Widget_Advanced_Comments extends WP_Widget {
 		<?php
 	}
 
-}
 
+	/**
+	 * Outputs plugin attribution
+	 *
+	 * @access public
+	 *
+	 * @since 1.0
+	 *
+	 * @return string Plugin attribution.
+	 */
+	public function colophon()
+	{
+		return '<!-- Advanced Comments Widget by darrinb http://darrinb.com/plugins/advanced-comments-widget -->';
+	}
 
-// Register and load the widget
-function _acw_load_widget() {
-	register_widget( 'Widget_Advanced_Comments' );
 }
-#add_action( 'widgets_init', '_acw_load_widget' );
