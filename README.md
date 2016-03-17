@@ -7,12 +7,13 @@ This recent comments widget provides advanced widget features for displaying com
 ### Features
 
 * Select which post types to show comments for.  (You can choose either all types, or a specific type.) 
+* Exclude pingbacks and trackbacks.
+* Set the number of comments to show.
+* Set the order for displaying the comments.
 * Show comment author avatar.
 * Set _and preview_ avatar size.
 * Show an excerpt of the comment.
 * Determine the length of the excerpt.
-* Exclude pingbacks and trackbacks.
-* Set the number of comments to show.
 * Select the comment list format to match your site's markup.  Choose from: `ol`, `ul`, or `div`.
 * Select the comment format. Choose between `html5` or `xhtml`.
 

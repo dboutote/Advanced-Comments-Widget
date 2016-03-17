@@ -35,6 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function _acw_init() {
 	
+	include dirname( __FILE__ ) . '/inc/class-acw-recent-comments-utilities.php';
 	include dirname( __FILE__ ) . '/inc/class-widget-acw-recent-comments.php';
 	include dirname( __FILE__ ) . '/inc/class-acw-recent-comments.php';
 	
