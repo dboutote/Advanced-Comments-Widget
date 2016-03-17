@@ -26,6 +26,14 @@ __Features__
 * Select the comment list format to match your site's markup.  Choose from: `ol`, `ul`, or `div`.
 * Select the comment format. Choose between `html5` or `xhtml`.
 
+__Developer Features__
+
+This widget was built not only with end-users in mind, but also plugin developers.  Almost every aspect of this widget is extensible through filters and action hooks.  You can even add your own form fields to the widget form!
+
+* Need to remove a field from the widget form?  Not a problem!  Every field is passed through its own filter for easy customization.
+* Need to modify the output of the widget?  Easy!  The output is passed through numerous filters, allowing you to customize the comment list to meet your project's requirements.
+* For a full list of action hooks and filters, please see the plugin documentation: http://darrinb.com/plugins/advanced-comments-widget
+
 
 == Installation ==
 
@@ -49,13 +57,15 @@ __Features__
 
 The plugin's official page: http://darrinb.com/plugins/advanced-comments-widget
 
+= Can I contribute? =
+Of course! Have an idea for a feature?  Reach out on the plugin's official page.  Want to dive into  the code?  Jump right in!  Feel free to submit pull requests for new ideas enhancements!
+
 
 == Screenshots ==
 
-1. Accessible from the Quick Edit form
-2. Shown with color picker extension.
-3. Shown with icons extension.
-4. Shown with featured image extension.
+1. Multiple widget options.
+2. Preview your avatar size selection.
+3. Easily create a stylish comment list with avatars and excerpts.
 
 
 == Changelog ==
