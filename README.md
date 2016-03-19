@@ -17,7 +17,7 @@ This recent comments widget provides advanced widget features for displaying com
 * Select the comment list format to match your site's markup.  Choose from: `ol`, `ul`, or `div`.
 * Select the comment format. Choose between `html5` or `xhtml`.
 
-![term admin](assets/screenshot-2.gif?raw=true "Preview your choices!")
+![term admin](assets/screenshot-4.jpg?raw=true "Easily create comment lists!")
 
 ### Developer Features
 

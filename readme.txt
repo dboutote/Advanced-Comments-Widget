@@ -66,6 +66,7 @@ Of course! Have an idea for a feature?  Reach out on the plugin's official page.
 1. Multiple widget options.
 2. Preview your avatar size selection.
 3. Easily create a stylish comment list with avatars and excerpts.
+3. Example comment list in sidebar.
 
 
 == Changelog ==
