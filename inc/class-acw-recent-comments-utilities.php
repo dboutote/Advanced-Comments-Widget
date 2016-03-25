@@ -562,7 +562,7 @@ class ACW_Recent_Comments_Utilities
 						</span>
 					<?php endif; ?>
 
-					<span class="comment-header">
+					<span class="comment-header acw-comment-header">
 						<?php
 						printf(
 							_x( '%1$s <span class="on">on</span> %2$s', 'widgets' ),
@@ -622,6 +622,8 @@ class ACW_Recent_Comments_Utilities
 
 			<div id="div-comment-<?php echo sanitize_html_class( $acw_comment_id ); ?>" class="comment-body acw-comment-body">
 
+				<?php do_action( 'acw_comment_top', $comment, $instance ); ?>
+				
 				<div class="comment-meta acw-comment-meta">
 
 					<?php if ( $instance['show_thumbs'] ) : ?>
@@ -640,7 +642,7 @@ class ACW_Recent_Comments_Utilities
 						?>
 					</span>
 
-					<?php do_action('acw_comment_meta', $comment, $instance ); ?>
+					<?php do_action( 'acw_comment_meta', $comment, $instance ); ?>
 
 				</div>
 
@@ -649,6 +651,8 @@ class ACW_Recent_Comments_Utilities
 						<?php echo wp_html_excerpt( $comment_content, absint( $instance['excerpt_length'] ), '&hellip;' ); ?>
 					</div>
 				<?php endif; ?>
+				
+				<?php do_action( 'acw_comment_bottom', $comment, $instance ); ?>
 
 			</div>
 
