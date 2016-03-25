@@ -40,7 +40,8 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 	{
 		$widget_options = array(
 			'classname' => 'widget_acw_recent_comments',
-			'description' => __( 'A comments widget with extended features.' )
+			'description' => __( 'A comments widget with extended features.' ),
+			'customize_selective_refresh' => true,
 			);
 
 		$control_options = array();
