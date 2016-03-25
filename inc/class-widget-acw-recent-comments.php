@@ -22,6 +22,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Core class used to implement a Recent Comments widget.
  *
+ * @version 1.1 Added support for Selective Refresh
+ * @version 1.0 Initial version
+ *
  * @since 1.0
  *
  * @see WP_Widget
@@ -40,7 +43,8 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 	{
 		$widget_options = array(
 			'classname' => 'widget_acw_recent_comments',
-			'description' => __( 'A comments widget with extended features.' )
+			'description' => __( 'A comments widget with extended features.' ),
+			'customize_selective_refresh' => true,
 			);
 
 		$control_options = array();
@@ -80,7 +84,7 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 		$instance['id_base'] = $this->id_base;
 		$instance['widget_number'] = $this->number;
 		$instance['widget_id'] = $this->id;
-		
+
 		// widget title
 		$_title = ( ! empty( $instance['title'] ) ) ? $instance['title'] : '' ;
 		$_title = apply_filters( 'widget_title', $_title, $instance, $this->id_base );
@@ -184,7 +188,7 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 	public function update( $new_instance, $old_instance )
 	{
 		$instance                   = $old_instance;
-		
+
 		$instance['title']          = sanitize_text_field( $new_instance['title'] );
 		$instance['post_type']      = sanitize_text_field( $new_instance['post_type'] );
 		$instance['exclude_pings']  = isset( $new_instance['exclude_pings'] ) ? 1 : 0 ;
