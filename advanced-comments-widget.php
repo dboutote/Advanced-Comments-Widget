@@ -5,12 +5,12 @@
  * @package ACW_Recent_Comments
  *
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
- * @version     1.0
+ * @version     1.1
  *
  * Plugin Name: Advanced Comments Widget
  * Plugin URI:  http://darrinb.com/plugins/advanced-comments-widget
  * Description: A highly customizable recent comments widget.
- * Version:     1.0
+ * Version:     1.1
  * Author:      Darrin Boutote
  * Author URI:  http://darrinb.com
  * Text Domain: advanced-comments-widget
@@ -34,11 +34,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 function _acw_init() {
-	
+
 	include dirname( __FILE__ ) . '/inc/class-acw-recent-comments-utilities.php';
 	include dirname( __FILE__ ) . '/inc/class-widget-acw-recent-comments.php';
 	include dirname( __FILE__ ) . '/inc/class-acw-recent-comments.php';
-	
+
 	$ACW_Recent_Comments = new ACW_Recent_Comments( __FILE__ );
 	$ACW_Recent_Comments->init();
 

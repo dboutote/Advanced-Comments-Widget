@@ -15,7 +15,7 @@ This recent comments widget provides advanced widget features for displaying com
 
 __Features__
 
-* Select which post types to show comments for.  (You can choose either all types, or a specific type.) 
+* Select which post types to show comments for.  (You can choose either all types, or a specific type.)
 * Exclude pingbacks and trackbacks.
 * Set the number of comments to show.
 * Set the order for displaying the comments.
@@ -70,6 +70,9 @@ Of course! Have an idea for a feature?  Reach out on the plugin's official page.
 
 
 == Changelog ==
+
+= 1.1
+* Added support for Selective Refresh for the Customizer
 
 = 1.0 =
 * Initial release
