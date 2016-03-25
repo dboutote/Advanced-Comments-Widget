@@ -71,7 +71,7 @@ Of course! Have an idea for a feature?  Reach out on the plugin's official page.
 
 == Changelog ==
 
-= 1.1
+= 1.1 =
 * Added support for Selective Refresh for the Customizer
 
 = 1.0 =
