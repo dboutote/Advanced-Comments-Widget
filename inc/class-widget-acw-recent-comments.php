@@ -268,7 +268,7 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 
 			do_action( "acw_form_before_field_{$name}", $instance, $this );
 
-			echo apply_filters( "acw_form_field_{$name}", $field ) . "\n";
+			echo apply_filters( "acw_form_field_{$name}", $field, $instance, $this ) . "\n";
 
 			do_action( "acw_form_after_field_{$name}", $instance, $this );
 
