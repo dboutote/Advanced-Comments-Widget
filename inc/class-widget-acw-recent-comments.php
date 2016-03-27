@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Core class used to implement a Recent Comments widget.
  *
+ * @version 1.1.1 Updated "acw_form_field_{$name}" filter
  * @version 1.1 Added support for Selective Refresh
  * @version 1.0 Initial version
  *
