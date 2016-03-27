@@ -71,8 +71,11 @@ Of course! Have an idea for a feature?  Reach out on the plugin's official page.
 
 == Changelog ==
 
+= 1.1.1 =
+* 
+
 = 1.1 =
-* Added support for Selective Refresh for the Customizer
+* Added support for Selective Refresh for the Customizer for WP 4.5
 
 = 1.0 =
 * Initial release
