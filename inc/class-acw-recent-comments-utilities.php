@@ -29,6 +29,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ACW_Recent_Comments_Utilities
 {
 
+	/**
+	 * Sets default parameters
+	 *
+	 * Use 'acw_instance_defaults' filter to modify accepted defaults.
+	 *
+	 * @uses WordPress current_theme_supports()
+	 *
+	 * @access public
+	 *
+	 * @since 1.0
+	 *
+	 * @return array $defaults The default values for the widget.
+	 */
+	public static function instance_defaults()
+	{
+		$_comment_format = current_theme_supports( 'html5', 'comment-list' ) ? 'html5' : 'xhtml';
+		$_list_style = ( 'html5' == $_comment_format ) ? 'div' : 'ul' ;
+
+		$_defaults = array(
+			'title'          => __('Recent Comments'),
+			'post_type'      => 'post',
+			'exclude_pings'  => 1,
+			'number'         => 5,
+			'order'          => 'desc',
+			'show_thumbs'    => 1,
+			'thumb_size'     => 55,
+			'show_excerpt'   => 1,
+			'excerpt_length' => 50,
+			'comment_format' => $_comment_format,
+			'list_style'     => $_list_style,
+		);
+
+		$defaults = apply_filters( 'acw_instance_defaults', $_defaults );
+
+		return $defaults;
+	}
+
 
 	/**
 	 * Builds form field: title

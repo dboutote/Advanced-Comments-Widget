@@ -81,6 +81,9 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 			$args['widget_id'] = $this->id;
 		}
 
+		$defaults = ACW_Recent_Comments_Utilities::instance_defaults();
+		$instance = wp_parse_args( (array) $instance, $defaults );
+
 		// build out the instance for plugin devs
 		$instance['id_base'] = $this->id_base;
 		$instance['widget_number'] = $this->number;
@@ -222,25 +225,8 @@ class Widget_ACW_Recent_Comments extends WP_Widget {
 	public function form( $instance )
 	{
 
-		$_comment_format = current_theme_supports( 'html5', 'comment-list' ) ? 'html5' : 'xhtml';
-		$_list_style = ( 'html5' == $_comment_format ) ? 'div' : 'ul' ;
-
-		$_defaults = array(
-			'title'          => __('Recent Comments'),
-			'post_type'      => 'post',
-			'exclude_pings'  => 1,
-			'number'         => 5,
-			'order'          => 'desc',
-			'show_thumbs'    => 1,
-			'thumb_size'     => 55,
-			'show_excerpt'   => 1,
-			'excerpt_length' => 50,
-			'comment_format' => $_comment_format,
-			'list_style'     => $_list_style,
-		);
-
-		$_defaults = apply_filters( 'acw_instance_defaults', $_defaults );
-		$instance = wp_parse_args( (array) $instance, $_defaults );
+		$defaults = ACW_Recent_Comments_Utilities::instance_defaults();
+		$instance = wp_parse_args( (array) $instance, $defaults );
 
 		$_fields   =  array(
 			'title'          => ACW_Recent_Comments_Utilities::build_field_title( $instance, $this ),
