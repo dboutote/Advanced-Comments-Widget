@@ -72,6 +72,9 @@ Of course! Have an idea for a feature?  Reach out on the plugin's official page.
 
 == Changelog ==
 
+= 1.1.2 =
+* compatibility fix for WP 4.5 when rendering ::widget() in the Customizer
+
 = 1.1.1 =
 * added field reference to `"acw_form_field_{$name}"` filter
 * added instance reference to `"acw_form_field_{$name}"` filter
